@@ -1,0 +1,54 @@
+name: Mern ci pipeline
+on:
+  push:
+    branches:
+      - master
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      
+      - name: install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: install backend dependencies
+        run: |
+          cd backend
+          npm install
+      
+      - name: run backend
+        run: |
+          cd backend
+          node index.js
+          sleep 3:
+          curl http://localhost:5000
+  
+  frontend:
+    runs-on: ubuntu-latest
+    needs: backend
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      
+      - name: install node
+        uses: actions/checkout@v3
+        with: 
+          node-version: 18
+      
+      - name: install frontend
+        run: |
+          cd frontend
+          npm run build 
+      - name: run frontend
+        run: |
+          cd frontend
+          npm run dev
