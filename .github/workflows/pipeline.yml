@@ -40,11 +40,15 @@ jobs:
         uses: actions/checkout@v3
       
       - name: install node
-        uses: actions/checkout@v3
+        uses: actions/setup-node@v3
         with: 
           node-version: 18
       
       - name: install frontend
+        run:
+          cd frontend
+          npm install
+      - name: build frontend
         run: |
           cd frontend
           npm run build 
